@@ -1,52 +1,44 @@
-import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { auth } from '../FirebaseConfig';
-import { logoutUser } from '../redux/UserSlice';
+import { Ionicons } from "@expo/vector-icons";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Home from "./Home";
+import SavedNews from "./SavedNews";
 
-const Tabnav = ({navigation}) => {
+const Tab = createBottomTabNavigator();
 
-    const user = useSelector((state) => state.user)
-
-const dispatch = useDispatch()
-    const onLogout = async () =>{
-        
-
-        try {
-            
-            dispatch(logoutUser())
-
-
-            await auth.signOut()
-
-            navigation.navigate('Login')
-
-        } catch (error) {
-            console.log('Error loggin out', error.message)
-        }
-    }
-
+const Tabnav = () => {
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Tabnav Screen</Text>
-      <Text style={styles.text}>{user.displayName}</Text>
-      <Text style={styles.text}>{user.uid}</Text>
-      <Button title='logout' onPress={onLogout}/>
-    </View>
+    <Tab.Navigator screenOptions={{ 
+      headerShown: false,
+      tabBarIconStyle: { width: 30, height: 30 },
+      tabBarLabelStyle: { fontSize: 12 },
+      tabBarStyle: {height: 60},
+      }}>
+
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home" size={size} color={color} />
+          ),
+          tabBarLabel: "Home",
+        }}
+      />
+
+      <Tab.Screen
+        name="SavedNews"
+        component={SavedNews}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="bookmark" size={size} color={color} />
+          ),
+          tabBarLabel: "Saved",
+        }}
+      />
+
+    </Tab.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 24,
-    color: '#333',
-  },
-});
 
 export default Tabnav;
