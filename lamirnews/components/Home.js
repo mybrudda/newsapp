@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
@@ -10,11 +11,15 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useSelector } from "react-redux";
+import { db } from "../FirebaseConfig";
 
 const Home = () => {
   const [searchValue, setSearchValue] = useState("");
   const [category, setCategory] = useState("general");
   const [articles, setArticles] = useState([]);
+
+  const currentUser = useSelector((state) => state.user);
 
   const apiKey = "1d6eb2be249a488b895517b9a7eaddc7";
   const searchEndpoint = `https://newsapi.org/v2/everything?q=${searchValue}&apiKey=${apiKey}`;
@@ -58,9 +63,34 @@ const Home = () => {
     }
   };
 
+  const onSaveArticle = async (article) => {
+    try {
+      if (currentUser.uid) {
+        await addDoc(
+          collection(db, "users", currentUser.uid, "savedArticles"),
+          {
+            title: article.title,
+            description: article.description,
+            url: article.url,
+            urlToImage: article.urlToImage,
+            author: article.author,
+            source: article.source,
+            publishedAt: article.publishedAt,
+            articleSavedAt: serverTimestamp(),
+          }
+        );
+      }
+    } catch (error) {
+      console.log("Error saving: ", error.message);
+    }
+  };
+
   const renderItem = ({ item }) => (
     <View style={styles.articleContainer}>
-      <TouchableOpacity style={styles.bookmarkIcon}>
+      <TouchableOpacity
+        style={styles.bookmarkIcon}
+        onPress={() => onSaveArticle(item)}
+      >
         <Ionicons name="bookmark-outline" size={24} color="white" />
       </TouchableOpacity>
 
@@ -85,7 +115,7 @@ const Home = () => {
             onPress={fetchSearchEndpoint}
             style={styles.SearchIconContainer}
           >
-            <Ionicons name="search" size={24} color="white" /> {/* Search icon */}
+            <Ionicons name="search" size={24} color="white" />
           </TouchableOpacity>
         </View>
 
@@ -130,13 +160,12 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#d0d0d0", 
+    backgroundColor: "#d0d0d0",
   },
   header: {
     width: "100%",
-    backgroundColor: "#4a90e2", 
+    backgroundColor: "#4a90e2",
     height: 180,
-    display: "flex",
     justifyContent: "center",
     alignItems: "center",
     paddingTop: 20,
@@ -160,15 +189,15 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#dcdcdc", 
-    backgroundColor: "#ffffff", 
+    borderColor: "#dcdcdc",
+    backgroundColor: "#ffffff",
     paddingLeft: 12,
     marginHorizontal: 10,
   },
   SearchIconContainer: {
     width: 50,
     height: 45,
-    backgroundColor: "#3e51ac", 
+    backgroundColor: "#3e51ac",
     borderRadius: 22.5,
     justifyContent: "center",
     alignItems: "center",
@@ -183,7 +212,7 @@ const styles = StyleSheet.create({
     minHeight: 300,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#ffffff", 
+    backgroundColor: "#ffffff",
     marginBottom: 10,
     marginTop: 10,
     borderRadius: 10,
@@ -199,14 +228,14 @@ const styles = StyleSheet.create({
   articleTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#333", 
+    color: "#333",
     flex: 1,
     marginBottom: 20,
   },
   bookmarkIcon: {
     width: 50,
     height: 50,
-    backgroundColor: "#ff6347", 
+    backgroundColor: "#ff6347",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "50%",
@@ -214,18 +243,18 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
   },
   categoryButtonContainer: {
-    width: 150,
+    paddingHorizontal: 10,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#b2d3e3", 
+    backgroundColor: "#b2d3e3",
     justifyContent: "center",
     alignItems: "center",
     marginRight: 10,
   },
   categoryButtonText: {
-    color: "#333", 
+    color: "#333",
     letterSpacing: 2,
-    fontWeight: '500',
+    fontWeight: "500",
     fontSize: 16,
     textTransform: "capitalize",
   },
