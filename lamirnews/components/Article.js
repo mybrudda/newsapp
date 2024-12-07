@@ -1,13 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import { format } from 'date-fns';
 import {
-    Dimensions,
-    Image,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from "react-native";
 
 const Article = ({ route, navigation }) => {
@@ -34,7 +34,7 @@ const Article = ({ route, navigation }) => {
             color="#e5e5e5"
           />
         </TouchableOpacity>
-        <Text style={styles.text}>Lamirnews</Text>
+        <Text style={styles.titleText}>Lamirnews</Text>
       </View>
 
       <ScrollView style={styles.scrollView} 
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     marginVertical: 50,
   },
-  text: {
+  titleText: {
     fontSize: 28,
     color: "#f1f1f1",
     letterSpacing: 2,

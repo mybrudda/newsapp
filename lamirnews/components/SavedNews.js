@@ -30,7 +30,11 @@ const SavedNews = ({navigation}) => {
 
       await auth.signOut();
 
-      navigation.navigate("Login");
+      navigation.reset({
+        index: 0,
+        routes:[{name: 'Login'}]
+      })
+      
     } catch (error) {
       console.log("Error loggin out", error.message);
       Alert.alert('Error', 'Failed to logout. Please try again.')
@@ -79,7 +83,8 @@ const SavedNews = ({navigation}) => {
   
 
   const renderItem = ({ item }) => (
-    <View style={styles.articleContainer}>
+    <TouchableOpacity onPress={() => navigation.navigate('Article', {article: item})}>
+      <View style={styles.articleContainer}>
       <TouchableOpacity
         style={styles.trashIcon}
         onPress={() => onDelete(item.id)}
@@ -90,12 +95,14 @@ const SavedNews = ({navigation}) => {
       <Image source={{ uri: item.urlToImage }} style={styles.image} />
       <Text style={styles.articleTitle}>{item.title}</Text>
     </View>
+    </TouchableOpacity>
+    
   );
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.text}>
+        <Text style={styles.titleText}>
           {currentUser.displayName}'s saved articles
         </Text>
         <TouchableOpacity
@@ -129,7 +136,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     flexDirection: 'row'
   },
-  text: {
+  titleText: {
     fontSize: 20,
     color: "#ffffff",
     letterSpacing: 2,

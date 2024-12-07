@@ -30,7 +30,10 @@ const Login = ({ navigation }) => {
                 setPassword('')
                 setErrorMsg('')
 
-                navigation.navigate('Tabnav')
+                navigation.reset({
+                  index: 0,
+                  routes: [{name: 'Tabnav'}]
+                })
             }
 
         }else{
