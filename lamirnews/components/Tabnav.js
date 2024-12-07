@@ -6,15 +6,15 @@ import SavedNews from "./SavedNews";
 const Tab = createBottomTabNavigator();
 
 const Tabnav = () => {
-
   return (
-    <Tab.Navigator screenOptions={{ 
-      headerShown: false,
-      tabBarIconStyle: { width: 30, height: 30 },
-      tabBarLabelStyle: { fontSize: 12 },
-      tabBarStyle: {height: 60},
-      }}>
-
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarIconStyle: { width: 30, height: 30 },
+        tabBarLabelStyle: { fontSize: 12 },
+        tabBarStyle: { height: 60 },
+      }}
+    >
       <Tab.Screen
         name="Home"
         component={Home}
@@ -26,6 +26,7 @@ const Tabnav = () => {
         }}
       />
 
+      
       <Tab.Screen
         name="SavedNews"
         component={SavedNews}
@@ -36,6 +37,12 @@ const Tabnav = () => {
           tabBarLabel: "Saved",
         }}
       />
+
+      
+
+      
+
+
 
     </Tab.Navigator>
   );

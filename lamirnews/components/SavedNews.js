@@ -1,7 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   FlatList,
   Image,
   StyleSheet,
@@ -32,6 +33,7 @@ const SavedNews = ({navigation}) => {
       navigation.navigate("Login");
     } catch (error) {
       console.log("Error loggin out", error.message);
+      Alert.alert('Error', 'Failed to logout. Please try again.')
     }
   };
 
@@ -56,8 +58,21 @@ const SavedNews = ({navigation}) => {
       }
     } catch (error) {
       console.log("Error fetching articles from Firestore: ", error.message);
+      Alert.alert('Error', 'Failed to fetch saved articles. Please try')
     }
   };
+
+  const onDelete = async (articleId) =>{
+    const articleRef = doc(db, 'users', currentUser.uid, 'savedArticles', articleId);
+
+    try {
+      await deleteDoc(articleRef)
+      console.log('Article deleted successfully')
+      setSavedArticles(prevArticles => prevArticles.filter(article => article.id !== articleId))
+    } catch (error) {
+      console.log('Error deleting article: ', error.message)
+    }
+  }
 
 
 
@@ -67,7 +82,7 @@ const SavedNews = ({navigation}) => {
     <View style={styles.articleContainer}>
       <TouchableOpacity
         style={styles.trashIcon}
-        // onPress={}
+        onPress={() => onDelete(item.id)}
       >
         <Ionicons name="trash-outline" size={24} color="white" />
       </TouchableOpacity>
@@ -146,8 +161,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   trashIcon: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     backgroundColor: "#ff6347",
     justifyContent: "center",
     alignItems: "center",

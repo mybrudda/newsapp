@@ -14,16 +14,19 @@ import {
 import { useSelector } from "react-redux";
 import { db } from "../FirebaseConfig";
 
-const Home = () => {
+
+const Home = ({navigation}) => {
   const [searchValue, setSearchValue] = useState("");
   const [category, setCategory] = useState("general");
   const [articles, setArticles] = useState([]);
+
 
   const currentUser = useSelector((state) => state.user);
 
   const apiKey = "1d6eb2be249a488b895517b9a7eaddc7";
   const searchEndpoint = `https://newsapi.org/v2/everything?q=${searchValue}&apiKey=${apiKey}`;
   const categoryEndpoint = `https://newsapi.org/v2/top-headlines?category=${category}&apiKey=${apiKey}`;
+  
 
   useEffect(() => {
     if (!searchValue) {
@@ -86,7 +89,8 @@ const Home = () => {
   };
 
   const renderItem = ({ item }) => (
-    <View style={styles.articleContainer}>
+      <TouchableOpacity onPress={() => navigation.navigate('Article', {article: item})}>
+        <View style={styles.articleContainer}>
       <TouchableOpacity
         style={styles.bookmarkIcon}
         onPress={() => onSaveArticle(item)}
@@ -97,6 +101,10 @@ const Home = () => {
       <Image source={{ uri: item.urlToImage }} style={styles.image} />
       <Text style={styles.articleTitle}>{item.title}</Text>
     </View>
+
+      </TouchableOpacity>
+      
+    
   );
 
   return (
@@ -115,7 +123,7 @@ const Home = () => {
             onPress={fetchSearchEndpoint}
             style={styles.SearchIconContainer}
           >
-            <Ionicons name="search" size={24} color="white" />
+            <Ionicons name="search" size={24} color="#e5e5e5" />
           </TouchableOpacity>
         </View>
 
@@ -172,7 +180,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 28,
-    color: "#ffffff",
+    color: "#f1f1f1",
     letterSpacing: 2,
     fontWeight: "bold",
   },
@@ -233,8 +241,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   bookmarkIcon: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     backgroundColor: "#ff6347",
     justifyContent: "center",
     alignItems: "center",
