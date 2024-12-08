@@ -9,7 +9,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { useSelector } from "react-redux";
 import { db } from "../FirebaseConfig";
@@ -19,7 +19,6 @@ const Home = ({navigation}) => {
   const [searchValue, setSearchValue] = useState("");
   const [category, setCategory] = useState("general");
   const [articles, setArticles] = useState([]);
-
 
   const currentUser = useSelector((state) => state.user);
 
