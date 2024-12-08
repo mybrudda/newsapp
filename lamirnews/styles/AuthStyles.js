@@ -1,63 +1,68 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
-
+const { width, height } = Dimensions.get("window");
+const isLandscape = width > height;
 
 export const authstyle = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'lightyellow',
   },
-  inputWrapper:{
+  inputWrapper: {
     borderWidth: 1,
     borderRadius: 5,
     backgroundColor: '#9ae1dd',
-    minWidth: '70%',
+    maxWidth: isLandscape ? '50%' : '100%', 
+    width: 500,
+    maxHeight: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 30,
-    paddingHorizontal: 30,
+    paddingVertical: isLandscape ? 10 : 30, 
+    paddingHorizontal: isLandscape ? 30 : 10,
   },
   title: {
-    fontSize: 24,
+    fontSize: isLandscape ? 20 : 24, 
     fontWeight: '700',
     color: '#333',
     marginVertical: 10,
     letterSpacing: 1,
+    textAlign: 'center',
   },
-  input:{
-    width: 300,
+  input: {
+    width: isLandscape ? 300 : 300, 
+    maxHeight: 50,
     borderWidth: 0.5,
     borderRadius: 10,
-    marginVertical: 15,
+    marginVertical: 10,
     paddingLeft: 10,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
-  buttonContainer:{
+  buttonContainer: {
     width: 300,
     height: 50,
     backgroundColor: 'orange',
     borderRadius: 4,
-    marginVertical: 20,
+    marginVertical: 15,
     justifyContent: 'center',
     borderWidth: 0.5,
   },
-  buttonText:{
+  buttonText: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '500',
     letterSpacing: 1,
   },
-  navigationText:{
-    fontSize: 18,
+  navigationText: {
+    fontSize: isLandscape ? 16 : 18, 
     marginVertical: 10,
-    color: 'purple'
+    color: 'purple',
+    textAlign: 'center',
   },
-  errorMsg:{
+  errorMsg: {
     color: 'red',
-    fontSize: 16,
+    fontSize: isLandscape ? 14 : 16, 
+    textAlign: 'center',
   },
-
 });
-
-
