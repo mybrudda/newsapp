@@ -1,7 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import * as ScreenOrientation from "expo-screen-orientation";
-import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import Article from "./components/Article";
 import Login from "./components/Login";
@@ -13,25 +11,7 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   
-  const [orientation, setOrientation] = useState(null);
-  useEffect(() => {
-    checkOrientation();
-    const subscription = ScreenOrientation.addOrientationChangeListener(
-      handleOrientationChange
-    );
-    return () => {
-      ScreenOrientation.removeOrientationChangeListeners(subscription);
-    };
-  }, []);
-  const checkOrientation = async () => {
-    const orientation = await ScreenOrientation.getOrientationAsync();
-    setOrientation(orientation);
-  };
-  const handleOrientationChange = (o) => {
-    setOrientation(o.orientationInfo.orientation);
-  };
-  console.log(orientation);
-  
+
   return (
     <Provider store={store}>
       <NavigationContainer>

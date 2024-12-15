@@ -9,10 +9,12 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { db } from "../FirebaseConfig";
+
+
 
 
 const Home = ({navigation}) => {
@@ -21,6 +23,9 @@ const Home = ({navigation}) => {
   const [articles, setArticles] = useState([]);
 
   const currentUser = useSelector((state) => state.user);
+
+
+
 
   const apiKey = "1d6eb2be249a488b895517b9a7eaddc7";
   const searchEndpoint = `https://newsapi.org/v2/everything?q=${searchValue}&apiKey=${apiKey}`;
@@ -111,20 +116,15 @@ const Home = ({navigation}) => {
       <View style={styles.header}>
         <Text style={styles.text}>Lamirnews</Text>
 
-        <View style={styles.searchContainer}>
+        
           <TextInput
             style={styles.input}
             placeholder="Search for news..."
             value={searchValue}
             onChangeText={setSearchValue}
+            onSubmitEditing={fetchSearchEndpoint}
           />
-          <TouchableOpacity
-            onPress={fetchSearchEndpoint}
-            style={styles.SearchIconContainer}
-          >
-            <Ionicons name="search" size={24} color="#e5e5e5" />
-          </TouchableOpacity>
-        </View>
+       
 
         <ScrollView
           horizontal={true}
@@ -178,21 +178,13 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   text: {
-    fontSize: 28,
+    fontSize: 24,
     color: "#f1f1f1",
     letterSpacing: 2,
     fontWeight: "bold",
   },
-  searchContainer: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 15,
-    marginBottom: 5,
-  },
   input: {
-    width: "80%",
+    width: "90%",
     height: 40,
     borderRadius: 12,
     borderWidth: 1,
@@ -200,14 +192,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     paddingLeft: 12,
     marginHorizontal: 10,
-  },
-  SearchIconContainer: {
-    width: 50,
-    height: 45,
-    backgroundColor: "#3e51ac",
-    borderRadius: 22.5,
-    justifyContent: "center",
-    alignItems: "center",
+    marginTop: 10,
   },
   categoryScrollview: {
     alignItems: "center",
@@ -216,7 +201,7 @@ const styles = StyleSheet.create({
   },
   articleContainer: {
     width: "90%",
-    minHeight: 300,
+    minHeight: 250,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#ffffff",
