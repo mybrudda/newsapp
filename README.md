@@ -36,6 +36,7 @@ A React Native application that allows users to sign up and log in using Firebas
 - **Firebase Auth**: User authentication (sign-up and login).
 - **Firestore**: NoSQL database for storing user-saved news articles.
 - **REST API**: Fetches the latest news articles.
+- **Redux toolkit**: For managing user State globally.
 
 ---
 
